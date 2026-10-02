@@ -20,13 +20,13 @@ jobs:
       - name: Check the tag matches package.json
         run: test "${GITHUB_REF_NAME#v}" = "$(node -p 'require("./package.json").version')"
       - run: npm run check
-      - run: npx vsce package --out estorm.vsix
-      - run: npx vsce publish --packagePath estorm.vsix
+      - run: npx vsce package --out "estorm-${GITHUB_REF_NAME#v}.vsix"
+      - run: npx vsce publish --packagePath "estorm-${GITHUB_REF_NAME#v}.vsix"
         env:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
       - name: Create the GitHub release
         run: |
           awk -v v="${GITHUB_REF_NAME#v}" '/^## /{p=($2==v);next} p' CHANGELOG.md > notes.md
-          gh release create "$GITHUB_REF_NAME" "estorm.vsix#estorm-${GITHUB_REF_NAME#v}.vsix" --notes-file notes.md
+          gh release create "$GITHUB_REF_NAME" "estorm-${GITHUB_REF_NAME#v}.vsix" --notes-file notes.md
         env:
           GH_TOKEN: ${{ github.token }}
