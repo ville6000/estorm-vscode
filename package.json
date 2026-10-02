@@ -217,7 +217,7 @@
     "test:e2e": "npm run build && node test/e2e/run.mjs"
   },
   "dependencies": {
-    "@villev/estorm": "^0.6.0",
+    "@villev/estorm": "^0.8.0",
     "vscode-languageclient": "^10.1.2"
   },
   "devDependencies": {
