@@ -2,7 +2,7 @@
   "name": "estorm",
   "displayName": "estorm",
   "description": "Event Storming boards as plain text: syntax highlighting, errors as you type and a live preview",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "villev",
   "license": "MIT",
   "author": "Ville Viklund",
