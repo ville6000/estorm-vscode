@@ -3,7 +3,7 @@
 Support for [estorm](https://github.com/ville6000/estorm) boards (`.estorm`),
 a plain-text notation for Event Storming.
 
-[![Visual Studio Marketplace](https://img.shields.io/visual-studio-marketplace/v/villev.estorm)](https://marketplace.visualstudio.com/items?itemName=villev.estorm)
+[![Visual Studio Marketplace](https://vsmarketplacebadges.dev/version-short/villev.estorm.svg)](https://marketplace.visualstudio.com/items?itemName=villev.estorm)
 [![CI](https://github.com/ville6000/estorm-vscode/actions/workflows/ci.yml/badge.svg)](https://github.com/ville6000/estorm-vscode/actions/workflows/ci.yml)
 
 Install from the
