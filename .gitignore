@@ -1,0 +1,10 @@
+node_modules/
+out/
+media/
+*.vsix
+*.tsbuildinfo
+
+# OS / editors
+.DS_Store
+.idea/
+*.iml

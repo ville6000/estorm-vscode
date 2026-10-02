@@ -1,0 +1,22 @@
+# Lines from estorm's highlight tests, and half-typed ones
+Customer: Place order -> (Order) -> [Stripe] -> OrderPlaced
+  then Ship -> Shipped
+when PaymentCaptured
+  after 30 days unless Paid
+  after 30 days
+every night at 02:00: Clean up -> CleanedUp
+every night
+  ! Why?
+  * Never overbooked
+{Cart}
+== Sales ==
+Place order -> (Order) -> OrderPlaced
+OrderPlaced
+   
+just (words)
+Customer:
+  then Ship ->
+Customer: Place order
+then
+  then Ship -> (Order)->Shipped -> [Mail]
+Night shift worker: Close day->DayClosed

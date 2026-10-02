@@ -1,0 +1,121 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "estorm",
+  "scopeName": "source.estorm",
+  "fileTypes": ["estorm"],
+  "comment": "Follows tokenize() in estorm's src/highlight.ts: one kind of line per rule, decided by how the line starts. Scopes must match semanticTokenScopes in package.json.",
+  "patterns": [
+    { "include": "#comment" },
+    { "include": "#hotspot" },
+    { "include": "#rule" },
+    { "include": "#read-model" },
+    { "include": "#section" },
+    { "include": "#then" },
+    { "include": "#when" },
+    { "include": "#after" },
+    { "include": "#every" },
+    { "include": "#actor" },
+    { "include": "#flow" },
+    { "include": "#timeline-event" }
+  ],
+  "repository": {
+    "comment": {
+      "match": "^\\s*(#.*)$",
+      "captures": { "1": { "name": "comment.line.number-sign.estorm" } }
+    },
+    "hotspot": {
+      "match": "^\\s*(!.*?)\\s*$",
+      "captures": { "1": { "name": "markup.deleted.hotspot.estorm" } }
+    },
+    "rule": {
+      "match": "^\\s*(\\*.*?)\\s*$",
+      "captures": { "1": { "name": "markup.quote.rule.estorm" } }
+    },
+    "read-model": {
+      "match": "^\\s*(\\{.*?)\\s*$",
+      "captures": { "1": { "name": "entity.other.attribute-name.read-model.estorm" } }
+    },
+    "section": {
+      "match": "^\\s*(==.*?)\\s*$",
+      "captures": { "1": { "name": "markup.heading.section.estorm" } }
+    },
+    "then": {
+      "comment": "then Command -> … -> Event",
+      "begin": "^\\s*(then)(?= )",
+      "beginCaptures": { "1": { "name": "keyword.control.then.estorm" } },
+      "end": "$",
+      "patterns": [{ "include": "#chain" }]
+    },
+    "when": {
+      "match": "^\\s*(when) +(.*?)\\s*$",
+      "captures": {
+        "1": { "name": "keyword.control.when.estorm" },
+        "2": { "name": "string.unquoted.event.estorm" }
+      }
+    },
+    "after": {
+      "comment": "after <schedule> [unless Event]",
+      "match": "^\\s*(after) +(.*?)(?: +(unless) +(.*?))?\\s*$",
+      "captures": {
+        "1": { "name": "keyword.control.after.estorm" },
+        "2": { "name": "constant.language.schedule.estorm" },
+        "3": { "name": "keyword.control.unless.estorm" },
+        "4": { "name": "string.unquoted.event.estorm" }
+      }
+    },
+    "every": {
+      "comment": "every <schedule>: Command -> … -> Event",
+      "begin": "^\\s*(every) +(.*?)\\s*(?:(:)(?= )|$)",
+      "beginCaptures": {
+        "1": { "name": "keyword.control.every.estorm" },
+        "2": { "name": "constant.language.schedule.estorm" },
+        "3": { "name": "punctuation.separator.colon.estorm" }
+      },
+      "end": "$",
+      "patterns": [{ "include": "#chain" }]
+    },
+    "actor": {
+      "comment": "Actor: Command -> … -> Event",
+      "begin": "^\\s*([^:]*?)\\s*(:)",
+      "beginCaptures": {
+        "1": { "name": "variable.other.actor.estorm" },
+        "2": { "name": "punctuation.separator.colon.estorm" }
+      },
+      "end": "$",
+      "patterns": [{ "include": "#chain" }]
+    },
+    "flow": {
+      "comment": "Command -> … -> Event",
+      "begin": "^(?=.*->)",
+      "end": "$",
+      "patterns": [{ "include": "#chain" }]
+    },
+    "timeline-event": {
+      "comment": "A bare line without brackets is an event on the timeline.",
+      "match": "^\\s*([^()\\[\\]{}\\s][^()\\[\\]{}]*?)\\s*$",
+      "captures": { "1": { "name": "string.unquoted.event.estorm" } }
+    },
+    "chain": {
+      "comment": "The first item is the command; after it, (aggregates), [externals] and events, separated by arrows.",
+      "patterns": [
+        {
+          "match": "\\G\\s*((?:(?!->).)+?)\\s*(?=->|$)",
+          "captures": { "1": { "name": "entity.name.function.command.estorm" } }
+        },
+        { "match": "->", "name": "keyword.operator.arrow.estorm" },
+        {
+          "match": "\\((?:(?!->).)*?(?=\\s*(?:->|$))",
+          "name": "entity.name.type.aggregate.estorm"
+        },
+        {
+          "match": "\\[(?:(?!->).)*?(?=\\s*(?:->|$))",
+          "name": "support.class.external.estorm"
+        },
+        {
+          "match": "[^\\s(\\[](?:(?!->).)*?(?=\\s*(?:->|$))",
+          "name": "string.unquoted.event.estorm"
+        }
+      ]
+    }
+  }
+}

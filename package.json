@@ -1,0 +1,234 @@
+{
+  "name": "estorm",
+  "displayName": "estorm",
+  "description": "Event Storming boards as plain text: syntax highlighting, errors as you type and a live preview",
+  "version": "0.1.0",
+  "publisher": "villev",
+  "license": "MIT",
+  "author": "Ville Viklund",
+  "homepage": "https://github.com/ville6000/estorm-vscode",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ville6000/estorm-vscode.git"
+  },
+  "keywords": [
+    "event-storming",
+    "ddd",
+    "domain-driven-design",
+    "diagram"
+  ],
+  "categories": [
+    "Programming Languages",
+    "Visualization"
+  ],
+  "icon": "icons/estorm.png",
+  "engines": {
+    "vscode": "^1.91.0"
+  },
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onWebviewPanel:estorm.preview"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "estorm",
+        "aliases": [
+          "estorm",
+          "Event Storming"
+        ],
+        "extensions": [
+          ".estorm"
+        ],
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./icons/estorm.svg",
+          "dark": "./icons/estorm.svg"
+        }
+      }
+    ],
+    "grammars": [
+      {
+        "language": "estorm",
+        "scopeName": "source.estorm",
+        "path": "./syntaxes/estorm.tmLanguage.json"
+      }
+    ],
+    "semanticTokenTypes": [
+      {
+        "id": "section",
+        "superType": "namespace",
+        "description": "A bounded context: == Name =="
+      },
+      {
+        "id": "actor",
+        "superType": "variable",
+        "description": "An actor sticky"
+      },
+      {
+        "id": "command",
+        "superType": "function",
+        "description": "A command sticky"
+      },
+      {
+        "id": "aggregate",
+        "superType": "class",
+        "description": "An aggregate sticky: (Name)"
+      },
+      {
+        "id": "external",
+        "superType": "interface",
+        "description": "An external system sticky: [Name]"
+      },
+      {
+        "id": "event",
+        "superType": "string",
+        "description": "A domain event sticky"
+      },
+      {
+        "id": "readModel",
+        "superType": "property",
+        "description": "A read model sticky: {Name}"
+      },
+      {
+        "id": "schedule",
+        "superType": "number",
+        "description": "A schedule: after 30 days, every night"
+      },
+      {
+        "id": "hotspot",
+        "description": "A hotspot: ! Question?"
+      },
+      {
+        "id": "rule",
+        "description": "A business rule: * Rule"
+      }
+    ],
+    "semanticTokenScopes": [
+      {
+        "language": "estorm",
+        "scopes": {
+          "section": [
+            "markup.heading.section.estorm"
+          ],
+          "actor": [
+            "variable.other.actor.estorm"
+          ],
+          "command": [
+            "entity.name.function.command.estorm"
+          ],
+          "aggregate": [
+            "entity.name.type.aggregate.estorm"
+          ],
+          "external": [
+            "support.class.external.estorm"
+          ],
+          "event": [
+            "string.unquoted.event.estorm"
+          ],
+          "readModel": [
+            "entity.other.attribute-name.read-model.estorm"
+          ],
+          "schedule": [
+            "constant.language.schedule.estorm"
+          ],
+          "hotspot": [
+            "markup.deleted.hotspot.estorm"
+          ],
+          "rule": [
+            "markup.quote.rule.estorm"
+          ]
+        }
+      }
+    ],
+    "commands": [
+      {
+        "command": "estorm.openPreview",
+        "title": "Open Preview",
+        "category": "estorm",
+        "icon": "$(open-preview)"
+      },
+      {
+        "command": "estorm.openPreviewToSide",
+        "title": "Open Preview to the Side",
+        "category": "estorm",
+        "icon": "$(open-preview)"
+      },
+      {
+        "command": "estorm.restartServer",
+        "title": "Restart Language Server",
+        "category": "estorm"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "estorm.openPreviewToSide",
+          "when": "editorLangId == estorm",
+          "group": "navigation"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "estorm.openPreview",
+          "when": "editorLangId == estorm"
+        },
+        {
+          "command": "estorm.openPreviewToSide",
+          "when": "editorLangId == estorm"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "estorm.openPreviewToSide",
+        "key": "ctrl+k v",
+        "mac": "cmd+k v",
+        "when": "editorLangId == estorm"
+      },
+      {
+        "command": "estorm.openPreview",
+        "key": "ctrl+shift+v",
+        "mac": "cmd+shift+v",
+        "when": "editorLangId == estorm"
+      }
+    ],
+    "configuration": {
+      "title": "estorm",
+      "properties": {
+        "estorm.server.command": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Command that starts the estorm language server, run in the workspace folder. Empty uses the server bundled with the extension. From a checkout of estorm: `node /path/to/estorm/src/cli.ts lsp`"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "node esbuild.mjs",
+    "watch": "node esbuild.mjs --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test test/*.test.mjs",
+    "check": "npm run typecheck && npm run format:check && npm test",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "vscode:prepublish": "npm run build -- --production",
+    "package": "vsce package",
+    "test:e2e": "npm run build && node test/e2e/run.mjs"
+  },
+  "dependencies": {
+    "@villev/estorm": "^0.6.0",
+    "vscode-languageclient": "^10.1.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.18.0",
+    "@types/vscode": "~1.91.0",
+    "@vscode/test-electron": "^3.1.0",
+    "@vscode/vsce": "^4.0.0",
+    "esbuild": "^0.28.2",
+    "prettier": "^3.9.9",
+    "typescript": "^7.0.2",
+    "vscode-oniguruma": "^2.0.1",
+    "vscode-textmate": "^9.3.2"
+  }
+}
