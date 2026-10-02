@@ -65,6 +65,23 @@ const tests = {
     assert.equal(highlights.length, 3);
   },
 
+  async 'completes names already on the board'() {
+    const doc = await vscode.workspace.openTextDocument({
+      language: 'estorm',
+      content: 'Customer: Place order -> (Order) -> OrderPlaced\nCustomer: Cancel order -> (\n',
+    });
+    await vscode.window.showTextDocument(doc);
+    const list = await until('completions', async () => {
+      const l = await vscode.commands.executeCommand(
+        'vscode.executeCompletionItemProvider',
+        doc.uri,
+        new vscode.Position(1, 27),
+      );
+      return l?.items.length ? l : undefined;
+    });
+    assert.ok(list.items.some((i) => i.insertText === '(Order)' || i.textEdit?.newText === '(Order)'));
+  },
+
   async 'opens the preview beside the file'() {
     const doc = await vscode.workspace.openTextDocument(path.join(folder, 'checkout.estorm'));
     await vscode.window.showTextDocument(doc, vscode.ViewColumn.One);

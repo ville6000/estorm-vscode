@@ -214,7 +214,8 @@
     "format:check": "prettier --check .",
     "vscode:prepublish": "npm run build -- --production",
     "package": "vsce package",
-    "test:e2e": "npm run build && node test/e2e/run.mjs"
+    "test:e2e": "npm run build && node test/e2e/run.mjs",
+    "test:e2e:min": "npm run build && VSCODE_VERSION=min node test/e2e/run.mjs"
   },
   "dependencies": {
     "@villev/estorm": "^0.8.0",

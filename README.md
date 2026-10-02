@@ -6,6 +6,8 @@ a plain-text notation for Event Storming.
 - Each part of a line coloured like the sticky it becomes
 - Parse errors and modelling warnings as you type
 - Every mention of the event under the cursor highlighted
+- Completion of keywords, and of events, aggregates, externals and actors
+  already on the board
 - Live preview of the board beside the text: **estorm: Open Preview to the
   Side** (<kbd>Ctrl/Cmd</kbd>+<kbd>K</kbd> <kbd>V</kbd>) or the button in
   the editor title. Click a sticky to jump to its line; zoom with the
@@ -13,7 +15,8 @@ a plain-text notation for Event Storming.
 - Line comments with `#`
 
 Colours come from a TextMate grammar at once, then from `estorm lsp`,
-estorm's language server, which also reports errors and highlights events.
+estorm's language server, which also reports errors, highlights events and
+completes names.
 The server is bundled and runs on VS Code's own Node.js: nothing to install.
 
 ## Colours
@@ -57,6 +60,7 @@ npm run build      # out/ (extension, bundled server) and media/ (preview)
 npm run watch
 npm run check      # typecheck, prettier, grammar tests
 npm run test:e2e   # in VS Code: server, diagnostics, highlights, preview
+npm run test:e2e:min  # the same in the oldest VS Code in engines.vscode
 npm run package    # estorm-<version>.vsix
 ```
 

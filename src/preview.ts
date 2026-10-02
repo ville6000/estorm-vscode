@@ -86,8 +86,10 @@ class Preview {
     try {
       this.send({ type: 'render', svg: render(text) });
     } catch (e) {
-      if (!(e instanceof ParseError)) throw e;
-      this.send({ type: 'error', line: e.line, message: e.message });
+      // Anything but a ParseError is a bug in estorm: show it rather than
+      // leave the last board looking current.
+      if (e instanceof ParseError) this.send({ type: 'error', line: e.line, message: e.message });
+      else this.send({ type: 'error', line: 0, message: `cannot render: ${e instanceof Error ? e.message : e}` });
     }
   }
 
