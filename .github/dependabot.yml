@@ -1,0 +1,21 @@
+# estorm releases arrive as their own pull request, so CI tests the bundled
+# server and preview against each one; the other npm packages come grouped
+# in one pull request.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      tooling:
+        patterns: ['*']
+        exclude-patterns: ['@villev/estorm']
+    ignore:
+      # Kept at the oldest supported VS Code, engines.vscode.
+      - dependency-name: '@types/vscode'
+        update-types: ['version-update:semver-major', 'version-update:semver-minor']
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly

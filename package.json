@@ -218,7 +218,7 @@
     "test:e2e:min": "npm run build && VSCODE_VERSION=min node test/e2e/run.mjs"
   },
   "dependencies": {
-    "@villev/estorm": "^0.9.0",
+    "@villev/estorm": "^0.12.0",
     "vscode-languageclient": "^10.1.2"
   },
   "devDependencies": {
