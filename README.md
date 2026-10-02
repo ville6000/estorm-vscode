@@ -3,6 +3,12 @@
 Support for [estorm](https://github.com/ville6000/estorm) boards (`.estorm`),
 a plain-text notation for Event Storming.
 
+[![Visual Studio Marketplace](https://img.shields.io/visual-studio-marketplace/v/villev.estorm)](https://marketplace.visualstudio.com/items?itemName=villev.estorm)
+
+Install from the
+[Marketplace](https://marketplace.visualstudio.com/items?itemName=villev.estorm),
+or run `ext install villev.estorm` in Quick Open (<kbd>Ctrl/Cmd</kbd>+<kbd>P</kbd>).
+
 - Each part of a line coloured like the sticky it becomes
 - Parse errors and modelling warnings as you type
 - Every mention of the event under the cursor highlighted
@@ -81,6 +87,17 @@ scopes must match `semanticTokenScopes` in `package.json`.
 
 `preview/index.html` shows the preview page in a plain browser, with a text
 box standing in for the editor (after `npm run build`).
+
+## Releasing
+
+1. Add the version's changes to `CHANGELOG.md` under `## <version>`
+2. `npm version patch` (or `minor`, `major`): bumps `package.json`, commits
+   and tags `v<version>`
+3. `git push --follow-tags`
+
+The tag runs `.github/workflows/publish.yml`: checks, publishes to the
+Marketplace with the `VSCE_PAT` secret and creates a GitHub release with the
+`.vsix` and the changelog section.
 
 ## License
 
