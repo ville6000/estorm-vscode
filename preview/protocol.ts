@@ -6,12 +6,17 @@
 
 /** Editor -> page, delivered with window.postMessage. */
 export type ToPage =
-  /** A new diagram; replaces the shown one and clears any error. */
+  /** A new diagram; replaces the shown one and clears the errors. */
   | { type: 'render'; svg: string }
-  /** The text doesn't parse (LINE 0: not tied to a line); the last diagram stays, dimmed. */
-  | { type: 'error'; line: number; message: string }
+  /** Every reason the text doesn't render (LINE 0: not tied to a line); the last diagram stays, dimmed. */
+  | { type: 'errors'; errors: PreviewError[] }
   /** Opaque state the page keeps for the editor, e.g. to restore after a reload. */
   | { type: 'state'; state: unknown };
+
+export interface PreviewError {
+  line: number;
+  message: string;
+}
 
 /** Page -> editor, through window.estormHost.post. */
 export type ToHost =

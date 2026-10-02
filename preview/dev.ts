@@ -3,7 +3,7 @@
  * a text box with estorm and sends the result to the page, the way the
  * VS Code and JetBrains hosts do.
  */
-import { ParseError, render } from '@villev/estorm';
+import { layout, parseAll, svg } from '@villev/estorm';
 import type { ToPage } from './protocol.ts';
 
 const EXAMPLE = `== Sales ==
@@ -24,12 +24,9 @@ editor.style.cssText = 'position:fixed;left:8px;bottom:8px;width:360px;height:20
 const send = (msg: ToPage) => window.postMessage(msg, '*');
 
 function update(): void {
-  try {
-    send({ type: 'render', svg: render(editor.value) });
-  } catch (e) {
-    if (!(e instanceof ParseError)) throw e;
-    send({ type: 'error', line: e.line, message: e.message });
-  }
+  const { board, errors } = parseAll(editor.value);
+  if (errors.length) send({ type: 'errors', errors: errors.map(({ line, message }) => ({ line, message })) });
+  else send({ type: 'render', svg: svg(layout(board)) });
 }
 
 window.estormHost = {

@@ -3,7 +3,7 @@
  * rendered here with estorm and sent to the shared page in preview/ (see
  * preview/PROTOCOL.md), which shows it and reports clicks on stickies.
  */
-import { ParseError, render } from '@villev/estorm';
+import { layout, parseAll, svg } from '@villev/estorm';
 import * as path from 'node:path';
 import * as vscode from 'vscode';
 import type { ToHost, ToPage } from '../preview/protocol.ts';
@@ -80,16 +80,20 @@ class Preview {
     try {
       text = (await vscode.workspace.openTextDocument(this.uri)).getText();
     } catch {
-      this.send({ type: 'error', line: 0, message: `cannot read ${path.basename(this.uri.fsPath)}` });
+      this.send({ type: 'errors', errors: [{ line: 0, message: `cannot read ${path.basename(this.uri.fsPath)}` }] });
       return;
     }
     try {
-      this.send({ type: 'render', svg: render(text) });
+      const { board, errors } = parseAll(text);
+      // Plain objects: a ParseError would lose its line on the way to the page.
+      if (errors.length) this.send({ type: 'errors', errors: errors.map(({ line, message }) => ({ line, message })) });
+      else this.send({ type: 'render', svg: svg(layout(board)) });
     } catch (e) {
-      // Anything but a ParseError is a bug in estorm: show it rather than
-      // leave the last board looking current.
-      if (e instanceof ParseError) this.send({ type: 'error', line: e.line, message: e.message });
-      else this.send({ type: 'error', line: 0, message: `cannot render: ${e instanceof Error ? e.message : e}` });
+      // A bug in estorm: show it rather than leave the last board looking current.
+      this.send({
+        type: 'errors',
+        errors: [{ line: 0, message: `cannot render: ${e instanceof Error ? e.message : e}` }],
+      });
     }
   }
 

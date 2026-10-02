@@ -6,7 +6,7 @@ uses no editor API. `npm run build` writes it to `media/preview.js` and
 `media/preview.css`; an editor ships those two files.
 
 The page draws the board it is sent, keeps the last good board (dimmed)
-under an error bar while the text doesn't parse, zooms (toolbar or
+under a list of errors while the text doesn't parse, zooms (toolbar or
 Ctrl/Cmd + wheel), and asks the editor to show a sticky's line when it is
 clicked. The editor parses and renders; the page never sees the text.
 
@@ -39,18 +39,18 @@ Types are in `protocol.ts`.
 
 Editor → page, with `window.postMessage(msg, '*')`:
 
-| Message                                            | Meaning                                                   |
-| -------------------------------------------------- | --------------------------------------------------------- |
-| `{ type: 'render', svg: string }`                  | New board, from estorm's `render()`; clears the error     |
-| `{ type: 'error', line: number, message: string }` | `ParseError`'s line and message; last board stays, dimmed |
-| `{ type: 'state', state: unknown }`                | Passed to `estormHost.setState`, for restoring later      |
+| Message                                                           | Meaning                                                                                     |
+| ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| `{ type: 'render', svg: string }`                                 | New board, from estorm's `svg()`; clears the errors                                         |
+| `{ type: 'errors', errors: { line: number, message: string }[] }` | Every error from estorm's `parseAll()`, line 0 if not tied to one; last board stays, dimmed |
+| `{ type: 'state', state: unknown }`                               | Passed to `estormHost.setState`, for restoring later                                        |
 
 Page → editor, through `window.estormHost.post(msg)`:
 
 | Message                            | Meaning                                                    |
 | ---------------------------------- | ---------------------------------------------------------- |
 | `{ type: 'ready' }`                | Listening; send the board. Sent again after a page reload. |
-| `{ type: 'reveal', line: number }` | A sticky, lane or the error bar was clicked; 1-based line  |
+| `{ type: 'reveal', line: number }` | A sticky, lane or error was clicked; 1-based line          |
 
 ## In JetBrains IDEs (to do)
 
