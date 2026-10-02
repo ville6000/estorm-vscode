@@ -4,7 +4,7 @@
  * to show a sticky's line when it is clicked. Builds its own DOM, so a host
  * only has to load preview.css, define window.estormHost and load this.
  */
-import type { Host, ToPage } from './protocol.ts';
+import type { Host, PreviewError, ToPage } from './protocol.ts';
 
 declare global {
   interface Window {
@@ -22,7 +22,7 @@ function element<K extends keyof HTMLElementTagNameMap>(tag: K, props: Partial<H
 
 const board = element('div', { className: 'board' });
 const diagram = element('div', { className: 'diagram' });
-const error = element('button', { className: 'error', type: 'button', hidden: true });
+const errors = element('div', { className: 'errors', hidden: true });
 const zoomOut = element('button', { type: 'button', title: 'Zoom out', textContent: '−' });
 const zoomLabel = element('button', { type: 'button', title: 'Actual size', className: 'zoom' });
 const zoomIn = element('button', { type: 'button', title: 'Zoom in', textContent: '+' });
@@ -30,11 +30,10 @@ const fit = element('button', { type: 'button', title: 'Fit to width', textConte
 const toolbar = element('div', { className: 'toolbar' });
 toolbar.append(zoomOut, zoomLabel, zoomIn, fit);
 board.append(diagram);
-document.body.append(board, toolbar, error);
+document.body.append(board, toolbar, errors);
 
 /** A zoom factor, or 'fit' to scale the board to the width of the page. */
 let zoom: number | 'fit' = 'fit';
-let errorLine = 0;
 
 const svgElement = () => diagram.querySelector('svg');
 const naturalWidth = () => Number(svgElement()?.getAttribute('width')) || 0;
@@ -96,9 +95,25 @@ diagram.addEventListener('click', (e) => {
   const line = Number((e.target as Element).closest('[data-line]')?.getAttribute('data-line'));
   if (line > 0) host.post({ type: 'reveal', line });
 });
-error.addEventListener('click', () => {
-  if (errorLine > 0) host.post({ type: 'reveal', line: errorLine });
+errors.addEventListener('click', (e) => {
+  const line = Number((e.target as Element).closest('[data-line]')?.getAttribute('data-line'));
+  if (line > 0) host.post({ type: 'reveal', line });
 });
+
+/** Lists LIST in the error bar, each error a button that shows its line. */
+function showErrors(list: PreviewError[]): void {
+  errors.replaceChildren(
+    ...list.map(({ line, message }) => {
+      const button = element('button', {
+        type: 'button',
+        textContent: line > 0 ? `line ${line}: ${message}` : message,
+      });
+      button.dataset.line = String(line);
+      return button;
+    }),
+  );
+  errors.hidden = list.length === 0;
+}
 
 window.addEventListener('message', (e: MessageEvent<ToPage>) => {
   const msg = e.data;
@@ -106,14 +121,11 @@ window.addEventListener('message', (e: MessageEvent<ToPage>) => {
     case 'render':
       diagram.innerHTML = msg.svg;
       diagram.classList.remove('stale');
-      error.hidden = true;
-      errorLine = 0;
+      showErrors([]);
       applyZoom();
       break;
-    case 'error':
-      errorLine = msg.line;
-      error.textContent = msg.line > 0 ? `line ${msg.line}: ${msg.message}` : msg.message;
-      error.hidden = false;
+    case 'errors':
+      showErrors(msg.errors);
       diagram.classList.add('stale');
       break;
     case 'state':
