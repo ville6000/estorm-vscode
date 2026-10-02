@@ -2,6 +2,7 @@ node_modules/
 out/
 media/
 *.vsix
+.vscode-test/
 *.tsbuildinfo
 
 # OS / editors
