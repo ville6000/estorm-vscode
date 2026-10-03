@@ -208,7 +208,7 @@
     "build": "node esbuild.mjs",
     "watch": "node esbuild.mjs --watch",
     "typecheck": "tsc --noEmit",
-    "test": "node --test test/*.test.mjs",
+    "test": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test test/*.test.mjs",
     "check": "npm run typecheck && npm run format:check && npm test",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
@@ -218,7 +218,7 @@
     "test:e2e:min": "npm run build && VSCODE_VERSION=min node test/e2e/run.mjs"
   },
   "dependencies": {
-    "@villev/estorm": "^0.12.0",
+    "@villev/estorm": "^0.13.0",
     "vscode-languageclient": "^10.1.2"
   },
   "devDependencies": {
