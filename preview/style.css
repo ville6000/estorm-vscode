@@ -31,12 +31,20 @@ body {
   position: absolute;
   inset: 0;
   overflow: auto;
+  /* Dragging pans and pinching zooms the board (pan.ts), not the page. */
+  touch-action: none;
+  cursor: grab;
+}
+
+.board.panning {
+  cursor: grabbing;
 }
 
 .diagram {
   padding: 16px;
   width: max-content;
   min-width: calc(100% - 32px);
+  user-select: none;
   transition: opacity 0.15s;
 }
 

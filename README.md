@@ -17,8 +17,9 @@ or run `ext install villev.estorm` in Quick Open (<kbd>Ctrl/Cmd</kbd>+<kbd>P</kb
   already on the board
 - Live preview of the board beside the text: **estorm: Open Preview to the
   Side** (<kbd>Ctrl/Cmd</kbd>+<kbd>K</kbd> <kbd>V</kbd>) or the button in
-  the editor title. Click a sticky to jump to its line; zoom with the
-  toolbar or <kbd>Ctrl/Cmd</kbd> + wheel.
+  the editor title. Click a sticky to jump to its line. Drag to pan; zoom
+  with the toolbar, <kbd>Ctrl/Cmd</kbd> + wheel or a pinch; click a
+  section's name to fit it.
 - Line comments with `#`
 
 Colours come from a TextMate grammar at once, then from `estorm lsp`,
