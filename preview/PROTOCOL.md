@@ -6,9 +6,9 @@ uses no editor API. `npm run build` writes it to `media/preview.js` and
 `media/preview.css`; an editor ships those two files.
 
 The page draws the board it is sent, keeps the last good board (dimmed)
-under a list of errors while the text doesn't parse, zooms (toolbar or
-Ctrl/Cmd + wheel), and asks the editor to show a sticky's line when it is
-clicked. The editor parses and renders; the page never sees the text.
+under a list of errors while the text doesn't parse, pans (drag) and zooms
+(toolbar, Ctrl/Cmd + wheel or pinch; clicking a section's name fits it), and
+asks the editor to show a sticky's line when it is clicked. The editor parses and renders; the page never sees the text.
 
 ## Hosting it
 
