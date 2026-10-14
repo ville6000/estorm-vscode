@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.1
+
+- estorm 0.14: a schedule ends at the last colon on its line, brackets are
+  rejected inside aggregate and external names, and `when` events match
+  whole names on broken lines
+
 ## 0.2.0
 
 - estorm 0.13: boards have a legend of sticky colours and arrows, and
