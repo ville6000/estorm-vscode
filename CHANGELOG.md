@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.0
+
+- estorm 0.21: go to definition from an event to the steps that produce it,
+  and rename of events, aggregates, externals and actors everywhere on the
+  board; a policy sticky grows to fit its label
+- The preview page now comes with estorm, shared with the JetBrains plugin
+
 ## 0.3.0
 
 - estorm 0.16: `when` reacts to a comma-separated list of events, and a

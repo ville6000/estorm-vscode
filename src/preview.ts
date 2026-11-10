@@ -1,12 +1,13 @@
 /**
  * Live previews of .estorm files, one webview per file. The board is
- * rendered here with estorm and sent to the shared page in preview/ (see
- * preview/PROTOCOL.md), which shows it and reports clicks on stickies.
+ * rendered here with estorm and sent to estorm's preview page, copied to
+ * media/ (see "Embedding the preview" in estorm's EDITORS.md), which shows it
+ * and reports clicks on stickies.
  */
 import { layout, parseAll, svg } from '@villev/estorm';
+import type { ToHost, ToPage } from '@villev/estorm/embed';
 import * as path from 'node:path';
 import * as vscode from 'vscode';
-import type { ToHost, ToPage } from '../preview/protocol.ts';
 
 const VIEW_TYPE = 'estorm.preview';
 const DELAY_MS = 150;

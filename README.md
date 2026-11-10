@@ -64,7 +64,7 @@ Needs Node.js 22.18 or later.
 
 ```sh
 npm install
-npm run build      # out/ (extension, bundled server) and media/ (preview)
+npm run build      # out/ (extension, bundled server) and media/ (estorm's preview page)
 npm run watch
 npm run check      # typecheck, prettier, grammar tests
 npm run test:e2e   # in VS Code: server, diagnostics, highlights, preview
@@ -75,20 +75,21 @@ npm run package    # estorm-<version>.vsix
 Press <kbd>F5</kbd> in VS Code to run the extension in a new window
 (`.vscode/launch.json`).
 
-| Path                              | Does                                                                   |
-| --------------------------------- | ---------------------------------------------------------------------- |
-| `syntaxes/estorm.tmLanguage.json` | TextMate grammar, same tokens as estorm's `src/highlight.ts`           |
-| `src/lsp.ts`                      | starts `estorm lsp`                                                    |
-| `src/preview.ts`                  | preview webviews: renders the board, jumps to clicked lines            |
-| `preview/`                        | the preview page, shared with other editors; see `preview/PROTOCOL.md` |
-| `test/e2e/`                       | end-to-end tests in a real VS Code (local install, or downloaded)      |
-| `test/parity.test.mjs`            | the grammar must tokenize `test/grammar/*.estorm` like estorm itself   |
+| Path                              | Does                                                                 |
+| --------------------------------- | -------------------------------------------------------------------- |
+| `syntaxes/estorm.tmLanguage.json` | TextMate grammar, same tokens as estorm's `src/highlight.ts`         |
+| `src/lsp.ts`                      | starts `estorm lsp`                                                  |
+| `src/preview.ts`                  | preview webviews: renders the board, jumps to clicked lines          |
+| `test/e2e/`                       | end-to-end tests in a real VS Code (local install, or downloaded)    |
+| `test/parity.test.mjs`            | the grammar must tokenize `test/grammar/*.estorm` like estorm itself |
 
 Token types must match `TOKEN_TYPES` in estorm's `src/lsp.ts`, and grammar
 scopes must match `semanticTokenScopes` in `package.json`.
 
-`preview/index.html` shows the preview page in a plain browser, with a text
-box standing in for the editor (after `npm run build`).
+The preview page itself comes from estorm (`@villev/estorm/embed/`), which
+the JetBrains plugin shows too; "Embedding the preview" in estorm's
+[EDITORS.md](https://github.com/ville6000/estorm/blob/main/EDITORS.md#embedding-the-preview)
+describes it and how to work on it.
 
 ## Releasing
 
