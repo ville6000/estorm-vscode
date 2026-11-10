@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.0
+
+- estorm 0.16: `when` reacts to a comma-separated list of events, and a
+  chain can end in several events, stacked in one column on the board
+
 ## 0.2.1
 
 - estorm 0.14: a schedule ends at the last colon on its line, brackets are
